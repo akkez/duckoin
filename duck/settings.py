@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
 
+	'app',
 	'social_django',
 ]
 
@@ -71,7 +72,7 @@ TEMPLATES = [
 				'django.template.context_processors.request',
 				'django.contrib.auth.context_processors.auth',
 				'django.contrib.messages.context_processors.messages',
-
+				'app.context_processors.some_settings',
 				'social_django.context_processors.backends',
 				'social_django.context_processors.login_redirect',
 			],
@@ -112,7 +113,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Moscow'
 
 USE_I18N = True
 
@@ -140,3 +141,6 @@ LOGIN_REDIRECT_URL = '/'
 
 SOCIAL_AUTH_STRATEGY = 'social_django.strategy.DjangoStrategy'
 SOCIAL_AUTH_STORAGE = 'social_django.models.DjangoStorage'
+
+REWARD_COOLDOWN = 1
+REWARD_AMOUNT = 7

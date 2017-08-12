@@ -1,0 +1,64 @@
+{% extends 'templates/base.html' %}
+{% block title %}
+    Счет {{ wallet.title }}
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2>Мой счет {{ wallet.get_title }}</h2>
+        <p style="font-size: larger">Номер вашего счета &dash; <b>{{ wallet.title }}</b> <br>
+            Баланс: <b>{{ wallet.balance }}</b> уточек.</p>
+
+        <p>Вы можете опубликовать номер на своей странице или передать его любому, кто захочет перевести вам немного уточек.</p>
+        {% if can_take_reward %}
+            <p><a href="{% url 'reward' %}" class="btn btn-primary btn-lg">Получить {{ REWARD_AMOUNT }} уточек</a></p>
+        {% else %}
+            <p class="text-muted">Вы уже недавно получали уточки. Приходите сюда {{ next_reward|date:'d-m-Y' }} в {{ next_reward|date:'H:i' }}</p>
+        {% endif %}
+
+        <hr>
+        <h4>История переводов</h4>
+        <p>...</p>
+
+        <hr>
+        <h4>Настройки</h4>
+        <div class="row">
+            <div class="col-md-7">
+                <form action="{% url 'wallet' %}" method="post">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" {% if wallet.public %}checked="checked"{% endif %} name="public" value="1"> Сделать счёт публичным
+                        </label>
+                        <p>
+                            <small>Публичный счёт будет доступен по адресу <a href="{{ wallet_url }}" target="_blank">{{ wallet_url }}</a> вместе с историей
+                                переводов.
+                            </small>
+                        </p>
+                    </div>
+                    {% if wallet.public %}
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" {% if wallet.anonymous %}checked="checked"{% endif %} name="anonymous" value="1">
+                                Отображать ссылки на соцсети
+                            </label>
+                            <p>
+                                <small>Отметьте эту галочку, если не хотите отображать ссылки на свои профили в соц. сетях на странице счёта.</small>
+                            </p>
+                        </div>
+                        <div class="form-group">
+                            <label>Имя счета: </label>
+                            <input type="text" class="form-control" name="display_name" value="{{ wallet.display_name|default:"" }}"
+                                   placeholder="Псевдоним или ваше имя">
+                        </div>
+                    {% endif %}
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}

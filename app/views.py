@@ -1,13 +1,19 @@
+import datetime
+from django.utils import timezone
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import update_session_auth_hash
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import PasswordChangeForm, AdminPasswordChangeForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse
 
 from django.views import View
 from django.views.generic import TemplateView
 from social_django.models import UserSocialAuth
+
+from app.utils import get_or_create_wallet, transfer_funds, BillingException
 
 
 class IndexView(TemplateView):
@@ -78,3 +84,44 @@ class PasswordView(LoginRequiredMixin, View):
 		else:
 			messages.error(request, 'Пожалуйста, исправьте допущенные ошибки')
 		return render(request, 'templates/password.html', {'form': form})
+
+
+class WalletView(LoginRequiredMixin, TemplateView):
+	template_name = 'templates/wallet.html'
+
+	def get_context_data(self, **kwargs):
+		wallet = get_or_create_wallet(self.request.user)
+		wallet_url = self.request.build_absolute_uri(reverse('public_wallet', kwargs=dict(id=wallet.local_id)))
+
+		can_take_reward = wallet.can_take_reward()
+		next_reward = timezone.now() if can_take_reward else wallet.last_reward + datetime.timedelta(days=settings.REWARD_COOLDOWN)
+		return super().get_context_data(
+			wallet=wallet, wallet_url=wallet_url, can_take_reward=can_take_reward, next_reward=next_reward, **kwargs)
+
+
+class RewardView(LoginRequiredMixin, View):
+	def get(self, request, *args, **kwargs):
+		wallet = get_or_create_wallet(self.request.user)
+
+		if not wallet.can_take_reward():
+			messages.error(request, "В данный момент вы не можете получить уточки :(")
+			return redirect('wallet')
+
+		success = False
+		try:
+			success = transfer_funds(None, wallet, settings.REWARD_AMOUNT, "Держи уточки!")
+		except BillingException as e:
+			messages.error(request, "Ошибка: {}".format(e))
+
+		if success:
+			messages.success(request, "Уточки уже у тебя на счёте!")
+			wallet.last_reward = timezone.now()
+			wallet.save()
+
+		return redirect('wallet')
+
+
+class PublicWalletView(View):
+	def get(self, request, *args, **kwargs):
+		return HttpResponse('dummy')
+	# template_name = 'templates/public_wallet.html'
