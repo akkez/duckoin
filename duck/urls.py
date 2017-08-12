@@ -17,7 +17,7 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.conf.urls.static import static
-from app.views import IndexView, LoginView, SettingsView, PasswordView, AboutView, WalletView, PublicWalletView, RewardView
+from app.views import IndexView, LoginView, SettingsView, PasswordView, AboutView, WalletView, PublicWalletView, RewardView, TransferView
 from social_django.urls import urlpatterns as social_urls
 from django.contrib.auth.views import logout as logout_view
 
@@ -31,6 +31,7 @@ app_urlpatterns = [
 	url(r'^wallet/$', WalletView.as_view(), name='wallet'),
 	url(r'^reward/$', RewardView.as_view(), name='reward'),
 	url(r'^wallet/(?P<id>\d+)/$', PublicWalletView.as_view(), name='public_wallet'),
+	url(r'^transfer/$', TransferView.as_view(), name='transfer'),
 
 	url(r'^login/$', LoginView.as_view(), name='login'),
 	url(r'^start/$', LoginView.as_view(), name='start', kwargs=dict(act='start')),

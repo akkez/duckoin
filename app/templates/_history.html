@@ -1,0 +1,37 @@
+<div class="row">
+    <div class="col-md-7">
+        <table class="table table-d">
+            <tr>
+                <th>Сумма</th>
+                <th>Пользователь</th>
+                <th>Дата</th>
+                <th>Комментарий</th>
+            </tr>
+            {% for transfer in history %}
+                <tr>
+                    <td><span class="ducky">
+                        {% if not disable_signs %}
+                                    {% if transfer.receiver_id == wallet.id %}
+                                        +
+                                    {% else %}
+                                        —
+                                    {% endif %}
+                        {% endif %} {{ transfer.amount }}</span></td>
+                    <td>
+                        {% if transfer.receiver_id == wallet.id %}
+                            {% if transfer.sender_id is None %}
+                                ✨✨
+                            {% else %}
+                                <a href="{{ transfer.sender.get_link }}">{{ transfer.sender.get_name }}</a>
+                            {% endif %}
+                        {% else %}
+                            <a href="{{ transfer.receiver.get_link }}">{{ transfer.receiver.get_name }}</a>
+                        {% endif %}
+                    </td>
+                    <td>{{ transfer.created|date:"d-m-Y H:i" }}</td>
+                    <td>{{ transfer.comment }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
+</div>

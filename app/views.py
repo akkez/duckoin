@@ -16,7 +16,7 @@ from django.views.generic import TemplateView
 from social_django.models import UserSocialAuth
 
 from app.utils import get_or_create_wallet, transfer_funds, BillingException
-from app.models import Transfer
+from app.models import Transfer, Wallet
 
 
 class IndexView(TemplateView):
@@ -128,4 +128,14 @@ class RewardView(LoginRequiredMixin, View):
 class PublicWalletView(View):
 	def get(self, request, *args, **kwargs):
 		return HttpResponse('dummy')
+
 	# template_name = 'templates/public_wallet.html'
+
+
+class TransferView(LoginRequiredMixin, TemplateView):
+	def get_context_data(self, **kwargs):
+		wallet = get_or_create_wallet(self.request.user)
+		history = Transfer.objects.filter(sender=wallet).order_by('-created')
+		return super().get_context_data(history=history, wallet=wallet, **kwargs)
+
+	template_name = 'templates/transfer.html'

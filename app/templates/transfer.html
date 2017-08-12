@@ -1,0 +1,13 @@
+{% extends 'templates/base.html' %}
+{% block title %}
+    Перевод
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2>Перевод</h2>
+        <p>На этой странице вы можете перевести любое количество уточек любому желающему</p>
+
+        <h4>Ваши переводы</h4>
+        {% include 'templates/_history.html' with disable_signs=True %}
+    </div>
+{% endblock %}
