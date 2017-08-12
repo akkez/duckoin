@@ -6,9 +6,23 @@
 
     <div class="container">
         <h2>Вход</h2>
-        <a class="btn btn-default" href="{% url "social:begin" "twitter" %}" type="button">Войти через Twitter</a>
-        <a class="btn btn-default" href="{% url "social:begin" "vk-oauth2" %}" type="button">Войти через VK</a>
-        <a class="btn btn-default" href="{% url "social:begin" "email" %}" type="button">Войти через Email</a>
+        <p>Введите свой email:</p>
+        <div class="row">
+            <div class="col-md-4">
+                <form action="?" class="form-inline">
+                    <div class="form-group">
+                        <input type="email" class="form-control">
+                        <button class="btn btn-primary">Далее</button>
+                    </div>
+                </form>
+                <hr>
+            </div>
+        </div>
+        <h3>Или войдите через любимую соцсеть</h3>
+        <p>
+            <a class="btn btn-info" href="{% url "social:begin" "twitter" %}" type="button">Войти через Twitter</a>
+            <a class="btn btn-info" href="{% url "social:begin" "vk-oauth2" %}" type="button">Войти через VK</a>
+        </p>
     </div>
 
 {% endblock %}

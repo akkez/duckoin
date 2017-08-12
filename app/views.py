@@ -5,7 +5,6 @@ from django.contrib.auth.forms import PasswordChangeForm, AdminPasswordChangeFor
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 
-# Create your views here.
 from django.views import View
 from django.views.generic import TemplateView
 from social_django.models import UserSocialAuth
@@ -17,7 +16,18 @@ class IndexView(TemplateView):
 
 
 class LoginView(TemplateView):
+	def dispatch(self, request, *args, **kwargs):
+		if request.user.is_authenticated():
+			return redirect('index')
+		if kwargs.get('act') == 'start':
+			messages.info(request, 'Для получения уточек нужно авторизироваться на сайте')
+		return super().dispatch(request, *args, **kwargs)
+
 	template_name = 'templates/login.html'
+
+
+class AboutView(TemplateView):
+	template_name = 'templates/about.html'
 
 
 class SettingsView(LoginRequiredMixin, View):
