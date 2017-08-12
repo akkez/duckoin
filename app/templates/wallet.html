@@ -6,7 +6,7 @@
     <div class="container">
         <h2>Мой счет {{ wallet.get_title }}</h2>
         <p style="font-size: larger">Номер вашего счета &dash; <b>{{ wallet.title }}</b> <br>
-            Баланс: <b>{{ wallet.balance }}</b> уточек.</p>
+            Баланс: <b><span class="ducky">{{ wallet.balance }}</span></b>.</p>
 
         <p>Вы можете опубликовать номер на своей странице или передать его любому, кто захочет перевести вам немного уточек.</p>
         {% if can_take_reward %}
@@ -17,7 +17,45 @@
 
         <hr>
         <h4>История переводов</h4>
-        <p>...</p>
+        {% if history.count == 0 %}
+            <p>Переводов пока нет. Попробуйте получить немного уточек!</p>
+        {% else %}
+            <div class="row">
+                <div class="col-md-7">
+                    <table class="table table-d">
+                        <tr>
+                            <th>Сколько</th>
+                            <th>Кто</th>
+                            <th>Дата</th>
+                            <th>Комментарий</th>
+                        </tr>
+                        {% for transfer in history %}
+                            <tr>
+                                <td><span class="ducky">
+                                    {% if transfer.receiver_id == wallet.id %}
+                                        +
+                                    {% else %}
+                                        —
+                                    {% endif %} {{ transfer.amount }}</span></td>
+                                <td>
+                                    {% if transfer.receiver_id == wallet.id %}
+                                        {% if transfer.sender_id is None %}
+                                            ✨✨
+                                        {% else %}
+                                            <a href="{{ transfer.sender.get_link }}">{{ transfer.sender.get_name }}</a>
+                                        {% endif %}
+                                    {% else %}
+                                        <a href="{{ transfer.receiver.get_link }}">{{ transfer.receiver.get_name }}</a>
+                                    {% endif %}
+                                </td>
+                                <td>{{ transfer.created|date:"d-m-Y H:i" }}</td>
+                                <td>{{ transfer.comment }}</td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        {% endif %}
 
         <hr>
         <h4>Настройки</h4>

@@ -1,4 +1,6 @@
 import datetime
+
+from django.db.models import Q
 from django.utils import timezone
 from django.conf import settings
 from django.contrib import messages
@@ -14,6 +16,7 @@ from django.views.generic import TemplateView
 from social_django.models import UserSocialAuth
 
 from app.utils import get_or_create_wallet, transfer_funds, BillingException
+from app.models import Transfer
 
 
 class IndexView(TemplateView):
@@ -91,12 +94,13 @@ class WalletView(LoginRequiredMixin, TemplateView):
 
 	def get_context_data(self, **kwargs):
 		wallet = get_or_create_wallet(self.request.user)
-		wallet_url = self.request.build_absolute_uri(reverse('public_wallet', kwargs=dict(id=wallet.local_id)))
+		wallet_url = self.request.build_absolute_uri(wallet.get_link())
 
 		can_take_reward = wallet.can_take_reward()
 		next_reward = timezone.now() if can_take_reward else wallet.last_reward + datetime.timedelta(days=settings.REWARD_COOLDOWN)
+		history = Transfer.objects.filter(Q(receiver=wallet) | Q(sender=wallet)).order_by('-created')
 		return super().get_context_data(
-			wallet=wallet, wallet_url=wallet_url, can_take_reward=can_take_reward, next_reward=next_reward, **kwargs)
+			wallet=wallet, wallet_url=wallet_url, can_take_reward=can_take_reward, next_reward=next_reward, history=history, **kwargs)
 
 
 class RewardView(LoginRequiredMixin, View):

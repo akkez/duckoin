@@ -1,7 +1,9 @@
 import datetime
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils import timezone
+
 
 class Wallet(models.Model):
 	display_name = models.CharField(max_length=100, null=True)
@@ -24,6 +26,9 @@ class Wallet(models.Model):
 			return self.title
 
 		return self.display_name
+
+	def get_link(self):
+		return reverse('public_wallet', kwargs=dict(id=self.local_id))
 
 	def can_take_reward(self):
 		if self.last_reward is None:

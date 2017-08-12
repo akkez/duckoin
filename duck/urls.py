@@ -27,9 +27,9 @@ app_urlpatterns = [
 	url(r'^admin/', admin.site.urls),
 
 	url(r'^$', IndexView.as_view(), name='index'),
-	url(r'^about$', AboutView.as_view(), name='about'),
-	url(r'^wallet$', WalletView.as_view(), name='wallet'),
-	url(r'^reward$', RewardView.as_view(), name='reward'),
+	url(r'^about/$', AboutView.as_view(), name='about'),
+	url(r'^wallet/$', WalletView.as_view(), name='wallet'),
+	url(r'^reward/$', RewardView.as_view(), name='reward'),
 	url(r'^wallet/(?P<id>\d+)/$', PublicWalletView.as_view(), name='public_wallet'),
 
 	url(r'^login/$', LoginView.as_view(), name='login'),
