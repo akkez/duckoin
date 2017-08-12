@@ -1,0 +1,44 @@
+{% extends 'templates/base.html' %}
+{% block title %}
+    Настройки
+{% endblock %}
+{% block content %}
+    <div class="container">
+        <h2>Мой профиль</h2>
+        <p>Ваш email: {{ user.email }}</p>
+
+        <h3>VK</h3>
+        {% if vk_login %}
+            <p>Ваш профиль <a href="https://vk.com/id{{ vk_login.extra_data.id }}" target="_blank">id{{ vk_login.extra_data.id }}</a></p>
+            {% if can_disconnect %}
+                <form method="post" action="{% url 'social:disconnect' 'vk-oauth2' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-default btn-sm">Отвязать VK</button>
+                </form>
+            {% else %}
+                <button type="button" class="btn btn-default btn-sm" disabled>Отвязать VK</button>
+                <p class="text-danger">Сначала <a href="{% url 'password' %}">установите пароль</a> в профиле.</p>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'social:begin' 'vk-oauth2' %}">Привязать VK</a>
+        {% endif %}
+
+        <h3>Twitter</h3>
+        {% if twitter_login %}
+            <p>Ваш профиль <a href="https://twitter.com/{{ twitter_login.extra_data.access_token.screen_name }}"
+                               target="_blank">@{{ twitter_login.extra_data.access_token.screen_name }}</a></p>
+            {% if can_disconnect %}
+                <form method="post" action="{% url 'social:disconnect' 'twitter' %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-default btn-sm">Отвязать Twitter</button>
+                </form>
+            {% else %}
+                <button type="button" class="btn btn-default btn-sm" disabled>Отвязать Twitter</button>
+                <p class="text-danger">Сначала <a href="{% url 'password' %}">установите пароль</a> в профиле.</p>
+            {% endif %}
+        {% else %}
+            <a href="{% url 'social:begin' 'twitter' %}">Привязать Twitter</a>
+        {% endif %}
+    </div>
+
+{% endblock %}

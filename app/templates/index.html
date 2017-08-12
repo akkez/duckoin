@@ -1,0 +1,111 @@
+{% extends 'templates/base.html' %}
+{% block title %}
+    Уточки поддержки
+{% endblock %}
+{% block content %}
+    <div class="container">
+
+        <!-- Main component for a primary marketing message or call to action -->
+        <div class="jumbotron" id="jumbo-banner">
+            <h1>Duckoin - уточки поддержки</h1>
+            <p>Волонтеры должны знать, что вы цените их вклад в общее дело.<br/>
+                Поддержите волонтера, послав ему уточку в поддержку!</p>
+            <p>
+                <a class="btn btn-primary btn-lg" href="about.html">Как это работает? &raquo;</a>
+                <a class="btn btn-default btn-lg" href="#" id="jumbo-banner-thank-you">Спасибо</a>
+                <p>User: {{ user }}</p>
+                <p>User2: {{ request.user }}</p>
+                <p>UserId: {{ request.user.id }}</p>
+                <p>UserEmail: {{ request.user.email }}</p>
+
+            </p>
+        </div>
+
+        <h3>Мои уточки (счет 913102)</h3>
+        <p><em>Их нужно послать в поддержку!</em></p>
+
+        <h4><span class="ducky">14</span>
+            <a class="btn btn-large btn-primary" href="send.html">Послать</a>
+        </h4>
+
+        <h3>Еженедельные уточки (14.08-20.08)</h3>
+        <p><em>7 новых уточек каждую неделю!</em></p>
+
+        <h4><span class="ducky">+7</span>
+            <a class="btn btn-large btn-primary" href="claim.html">Забрать</a></h4>
+
+        <hr/>
+
+        <h3>Всего я получил в поддержку - <span class="ducky">37</span></h3>
+
+        <p><em>Осталось до вхождения в <a href="leaderboard.html">Top1000</a> - 31</em></p>
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-success" style="width: 54%"></div>
+        </div>
+
+        <p>За:
+            <a href="#">Листовки по почтовым ящикам</a> (12),
+            <a href="#">Деньги на кампанию</a> (7),
+            <a href="#">Подписи друзей за выдвижение</a> (5),
+            <a class="btn btn-default" href="kpi.html">Остальное (13) &gt;&gt;</a>
+        </p>
+
+        <h3>Получил за последний месяц - <span class="ducky">12</span></h3>
+
+        <p><em>Осталось до <a href="kpi.html">среднемесячного уровня</a> - 5</em></p>
+
+        <div class="progress">
+            <div class="progress-bar progress-bar-info" style="width: 70%"></div>
+        </div>
+
+        <p>За:
+            <a href="#">Подписи друзей за выдвижение</a> (5),
+            <a href="#">Пост в соцсетях</a> (4),
+            <a class="btn btn-default" href="kpi.html">Остальное (3) &gt;&gt;</a>
+        </p>
+
+        <p><a class="btn btn-large btn-primary" href="todo.html">Сделать еще в этом месяце!</a></p>
+
+        <hr/>
+
+        <h3>Чем помочь?</h3>
+
+        <p><em>За что волонтеры получают уточек (волонтеров / за последний месяц / всего)</em></p>
+
+        <ul>
+            <li><a href="#">Подписи друзей за выдвижение</a> (923 / 1123 / 3422 всего)</li>
+            <li><a href="#">Агитация на кубах</a> (170 / 330 / 2534)</li>
+            <li><a href="#">Деньги на кампанию</a> (690 / 756 / 2201)</li>
+            <li><a href="#">Пост в соцсетях</a> (501 / 521 / 1354)</li>
+            <li><a href="#">Листовки по почтовым ящикам</a> (243 / 350 / 1021)</li>
+        </ul>
+
+        <p><a class="btn btn-default" href="todo.html">Остальное &gt;&gt;</a></p>
+
+        <hr/>
+
+        <h3>Кого поддержать?</h3>
+
+        <p><em>Подвиги волонтеров.</em></p>
+
+        <ul>
+            <li><a href="#">12.08.17 - Владелец кофейни привез 350 латте участникам хакатона</a></li>
+            <li><a href="#">11.08.17 - Дерзкие волонтеры из Казани спрятали тираж в коробках из под пиццы</a></li>
+            <li><a href="#">02.08.17 - Степан Кольцов - мне нужно, чтобы было куда возвращаться</a></li>
+        </ul>
+
+        <p><a class="btn btn-default" href="stories.html">Лента новостей &gt;&gt;</a></p>
+
+        <hr/>
+
+        <h3>Общая статистика</h3>
+
+        <p><b>Волонтеров: 3254</b></p>
+        <p><b>Уточек в поддержку (всего): 64701</b></p>
+        <p><b>Уточек в поддержку (за месяц): 11702</b></p>
+
+    </div> <!-- /container -->
+
+
+{% endblock %}

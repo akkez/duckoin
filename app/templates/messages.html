@@ -1,0 +1,16 @@
+{% if messages %}
+    <div class="container">
+        {% for message in messages %}
+            {% if message.level == 30 %}
+            <div class="alert alert-warning">
+            {% elif message.level == 25 %}
+            <div class="alert alert-success">
+            {% else %}
+            <div class="alert alert-danger">
+            {% endif %}
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                {{ message }}
+            </div>
+        {% endfor %}
+    </div>
+{% endif %}
