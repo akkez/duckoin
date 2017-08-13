@@ -13,6 +13,8 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import datetime
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Quick-start development settings - unsuitable for production
@@ -142,5 +144,6 @@ LOGIN_REDIRECT_URL = '/'
 SOCIAL_AUTH_STRATEGY = 'social_django.strategy.DjangoStrategy'
 SOCIAL_AUTH_STORAGE = 'social_django.models.DjangoStorage'
 
-REWARD_COOLDOWN = 1
+REWARD_COOLDOWN = 7
 REWARD_AMOUNT = 7
+REWARD_DELTA = datetime.timedelta(minutes=REWARD_COOLDOWN)

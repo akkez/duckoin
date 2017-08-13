@@ -97,7 +97,7 @@ class WalletView(LoginRequiredMixin, TemplateView):
 		wallet_url = self.request.build_absolute_uri(wallet.get_link())
 
 		can_take_reward = wallet.can_take_reward()
-		next_reward = timezone.now() if can_take_reward else wallet.last_reward + datetime.timedelta(minutes=settings.REWARD_COOLDOWN)
+		next_reward = timezone.now() if can_take_reward else wallet.last_reward + settings.REWARD_DELTA
 		history = Transfer.objects.filter(Q(receiver=wallet) | Q(sender=wallet)).order_by('-created')
 		return super().get_context_data(
 			wallet=wallet, wallet_url=wallet_url, can_take_reward=can_take_reward, next_reward=next_reward, history=history, **kwargs)

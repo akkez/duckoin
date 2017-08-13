@@ -35,7 +35,7 @@ class Wallet(models.Model):
 			return True
 
 		now = timezone.now()
-		return self.last_reward + datetime.timedelta(minutes=settings.REWARD_COOLDOWN) < now
+		return self.last_reward + settings.REWARD_DELTA < now
 
 
 class Transfer(models.Model):
